@@ -1,9 +1,9 @@
-package com.vodeg.airlines_app.presentaion.base
+package com.vodeg.airlines_app.presentation.base
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.vodeg.airlines_app.presentaion.loading.LoadingDialog
+import com.vodeg.airlines_app.presentation.loading.LoadingDialog
 
 
 abstract class BaseFragment : Fragment()

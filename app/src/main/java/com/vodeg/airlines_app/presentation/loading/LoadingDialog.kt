@@ -1,4 +1,4 @@
-package com.vodeg.airlines_app.presentaion.loading
+package com.vodeg.airlines_app.presentation.loading
 
 import android.app.Dialog
 import android.content.Context
