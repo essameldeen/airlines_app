@@ -3,33 +3,26 @@ package com.vodeg.airlines_app.presentation.home
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.vodeg.airlines_app.R
 import com.vodeg.airlines_app.data.model.Airline
 import kotlinx.android.synthetic.main.airline_item_rv.view.*
-import java.util.ArrayList
 
 class AirlinesAdapterAnim : RecyclerView.Adapter<AirlinesAdapterAnim.AirlineViewHolder>() {
     inner class AirlineViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    var airlines: ArrayList<Airline> = ArrayList<Airline>()
+    private var airlines: MutableList<Airline> = mutableListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AirlineViewHolder {
         return AirlineViewHolder(
             LayoutInflater.from(parent.context)
                 .inflate(R.layout.airline_item_rv, parent, false),
-
-            )
+        )
     }
 
-    fun setData(items: ArrayList<Airline>) {
+    fun setData(items: MutableList<Airline>) {
 
-        airlines = ArrayList<Airline>()
-        for (item in items) {
-            airlines.add(item)
-        }
+        airlines = items
         notifyDataSetChanged()
     }
 
@@ -69,43 +62,55 @@ class AirlinesAdapterAnim : RecyclerView.Adapter<AirlinesAdapterAnim.AirlineView
         notifyItemRemoved(position)
     }
 
-    fun animateTo(models: List<Airline?>?) {
-        applyAndAnimateRemovals(models as List<Airline>)
+    fun animateTo(models: MutableList<Airline>) {
+        applyAndAnimateRemovals(models)
         applyAndAnimateAdditions(models)
         applyAndAnimateMovedStrings(models)
     }
 
-    private fun applyAndAnimateRemovals(newModels: List<Airline>) {
+    private fun applyAndAnimateRemovals(newModels: MutableList<Airline>) {
         for (i in airlines.indices.reversed()) {
-            val model: Airline = airlines.get(i)
-            if (!newModels.contains(model)) {
+            val model: Airline = airlines[i]
+            if (!newModels!!.contains(model)) {
                 removeItem(i)
             }
         }
     }
 
-    private fun applyAndAnimateAdditions(models: List<Airline>) {
+    private fun applyAndAnimateAdditions(models: MutableList<Airline>) {
         var i = 0
-        val count: Int = models.size
+        val count: Int = models?.size ?: 0
         while (i < count) {
-            val model: Airline = models[i]
+            val model: Airline = models?.get(i)!!
             if (!models.contains(model)) {
                 addItem(model, i)
             }
             i++
         }
     }
-    fun filter(allItems: List<Airline?>, query: String): ArrayList<Airline>? {
+
+    fun filter(allItems: MutableList<Airline>, query: String): MutableList<Airline>? {
         var query = query
         query = query.toLowerCase()
-        val filteredModelList: ArrayList<Airline> = ArrayList<Airline>()
+         var filteredModelList: MutableList<Airline> = mutableListOf()
         for (item in allItems) {
-            val data: String = item.title.toString() + " " + item.category
-            if (data.toLowerCase().contains(query)) {
+            val name: String? = item?.name
+            if (name?.toLowerCase()?.contains(query) == true) {
                 filteredModelList.add(item)
             }
         }
         return filteredModelList
+    }
+
+
+    private fun applyAndAnimateMovedStrings(airlineModels: MutableList<Airline>) {
+        for (toPosition in (airlineModels?.size?.minus(1) ?: 0) downTo 0) {
+            val model: Airline? = airlineModels?.get(toPosition)
+            val fromPosition: Int = airlines.indexOf(model)
+            if (fromPosition >= 0 && fromPosition != toPosition) {
+                moveItem(fromPosition, toPosition)
+            }
+        }
     }
 
     private var onItemClickListener: ((Airline) -> Unit)? = null

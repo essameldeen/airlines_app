@@ -32,15 +32,12 @@ class DescriptionFragment : BaseFragment() {
     }
 
     private fun initView(airline: Airline) {
-        airline.let { Log.d("DETAILSHERE", it.toString()) }
         _binding.apply {
             tvAirlineName.text = airline.name ?: "Name"
             tvAirlineCountry.text = airline.country ?: "Country"
             tvAirlineSlogan.text = airline.slogan ?: ""
             tvHeadquartersValues.text = airline.headQuaters ?: ""
-            showError(airline.headQuaters.toString())
             websiteLink = airline.website.toString()
-            showError(websiteLink)
         }
     }
 
@@ -55,6 +52,8 @@ class DescriptionFragment : BaseFragment() {
 
 
     private fun openWebSite() {
+        websiteLink =
+            if (websiteLink.startsWith("http://") || websiteLink.startsWith("https://")) websiteLink else "https://$websiteLink"
         val intent = Intent(
             Intent.ACTION_VIEW,
             Uri.parse(websiteLink)

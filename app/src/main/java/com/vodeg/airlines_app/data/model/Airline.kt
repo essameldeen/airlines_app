@@ -3,6 +3,7 @@ package com.vodeg.airlines_app.data.model
 
 import android.os.Parcelable
 import androidx.room.Entity
+import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.SerialName
 
@@ -11,20 +12,20 @@ import kotlinx.serialization.SerialName
 )
 @Parcelize
 data class Airline(
-    @SerialName("country")
+    @SerializedName("country")
     val country: String?,
-    @SerialName("established")
+    @SerializedName("established")
     val established: String?,
-    @SerialName("head_quaters")
+    @SerializedName("head_quaters")
     val headQuaters: String?,
-    @SerialName("id")
+    @SerializedName("id")
     val id: Double?,
-    @SerialName("logo")
+    @SerializedName("logo")
     val logo: String?,
-    @SerialName("name")
+    @SerializedName("name")
     val name: String?,
-    @SerialName("slogan")
+    @SerializedName("slogan")
     val slogan: String?,
-    @SerialName("website")
+    @SerializedName("website")
     val website: String?
 ): Parcelable

@@ -1,10 +1,10 @@
 package com.vodeg.airlines_app.presentation.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.LayoutMode
@@ -13,12 +13,16 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.databinding.FragmentHomeBinding
 import com.vodeg.airlines_app.presentation.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import java.util.ArrayList
 
 class HomeFragment : BaseFragment() {
     private lateinit var _binding: FragmentHomeBinding
     private lateinit var airlinesAdapter: AirlinesAdapter
+    private lateinit var airlinesAdapterAnim: AirlinesAdapterAnim
     private val homeViewModel: HomeViewModel by viewModel()
+    private lateinit var airLinesList: MutableList<Airline>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,8 +43,9 @@ class HomeFragment : BaseFragment() {
     private fun initView() {
         _binding.rvAirlinesList
         airlinesAdapter = AirlinesAdapter()
+        airlinesAdapterAnim = AirlinesAdapterAnim()
         _binding.rvAirlinesList.apply {
-            adapter = airlinesAdapter
+            adapter = airlinesAdapterAnim
             layoutManager = LinearLayoutManager(activity)
         }
     }
@@ -49,8 +54,23 @@ class HomeFragment : BaseFragment() {
         airlinesAdapter.setOnItemClickListener {
             openDetailsFragment(it)
         }
+        airlinesAdapterAnim.setOnItemClickListener {
+            openDetailsFragment(it)
+        }
         _binding.fbAdd.setOnClickListener {
             addNewAirline()
+        }
+        _binding.ibSearch.setOnClickListener {
+
+        }
+        _binding.etSearch.doAfterTextChanged { s ->
+            if (s.toString().isEmpty()) {
+                airlinesAdapterAnim.animateTo(airLinesList)
+                rv_airlinesList.scrollToPosition(0)
+            }
+            val filteredList = airlinesAdapterAnim.filter(airLinesList, s.toString())
+            filteredList?.let { airlinesAdapterAnim.animateTo(it) }
+            rv_airlinesList.scrollToPosition(0)
         }
     }
 
@@ -73,7 +93,10 @@ class HomeFragment : BaseFragment() {
         if (data?.isEmpty() == true) {
             showError("No DAtA !!")
         } else {
-            airlinesAdapter.differ.submitList(data?.toList())
+            //airlinesAdapter.differ.submitList(data?.toList())
+            airLinesList = data!!
+            airlinesAdapterAnim.setData(data?.toList() as ArrayList<Airline>)
+
         }
 
     }
