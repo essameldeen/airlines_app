@@ -6,29 +6,40 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.vodeg.airlines_app.databinding.FragmentDescriptionBinding
-import com.vodeg.airlines_app.databinding.FragmentHomeBinding
 import com.vodeg.airlines_app.presentation.base.BaseFragment
 import android.content.Intent
 import android.net.Uri
+import androidx.navigation.fragment.navArgs
+import com.vodeg.airlines_app.data.model.Airline
 
 
 class DescriptionFragment : BaseFragment() {
     private lateinit var _binding: FragmentDescriptionBinding
+    private val args: DescriptionFragmentArgs by navArgs()
+    private lateinit var websiteLink: String
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentDescriptionBinding.inflate(inflater, container, false)
-
-        initView()
+        val airline = args.airline
+        initView(airline)
         initListener()
 
         return _binding.root
     }
 
-    private fun initView() {
-
+    private fun initView(airline: Airline) {
+        _binding.apply {
+            tvAirlineName.text = airline.name ?: "Name"
+            tvAirlineCountry.text = airline.country ?: "Country"
+            tvAirlineSlogan.text = airline.slogan ?: ""
+            tvHeadquartersValues.text = airline.headQuaters ?: ""
+            showError(airline.headQuaters.toString())
+            websiteLink = airline.website.toString()
+            showError(websiteLink)
+        }
     }
 
     private fun initListener() {
@@ -44,7 +55,7 @@ class DescriptionFragment : BaseFragment() {
     private fun openWebSite() {
         val intent = Intent(
             Intent.ACTION_VIEW,
-            Uri.parse("http://www.google.com")
+            Uri.parse(websiteLink)
         )
         startActivity(intent)
     }

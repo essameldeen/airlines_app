@@ -23,5 +23,9 @@
     <fragment
         android:id="@+id/descriptionFragment"
         android:name="com.vodeg.airlines_app.presentation.description.DescriptionFragment"
-        android:label="DescriptionFragment" />
+        android:label="DescriptionFragment">
+        <argument
+            android:name="airline"
+            app:argType="com.vodeg.airlines_app.data.model.Airline" />
+    </fragment>
 </navigation>

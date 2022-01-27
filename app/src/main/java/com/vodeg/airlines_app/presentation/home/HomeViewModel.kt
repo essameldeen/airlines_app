@@ -22,14 +22,15 @@ class HomeViewModel constructor(private val usecase: GetAllAirlines) : ViewModel
         get() = _showErrorMessage
 
     init {
-        _showProgress.value = false
         getAllAirlines()
     }
 
     private fun getAllAirlines() = viewModelScope.launch {
         _showProgress.postValue(true)
         try {
+
             _allAirlines.postValue(usecase.run())
+            _showProgress.postValue(false)
         } catch (e: Exception) {
             _showProgress.postValue(false)
             _showErrorMessage.postValue(e.message)

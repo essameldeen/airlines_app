@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.LayoutMode
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.databinding.FragmentHomeBinding
 import com.vodeg.airlines_app.presentation.base.BaseFragment
@@ -44,12 +47,13 @@ class HomeFragment : BaseFragment() {
 
     private fun initListener() {
         airlinesAdapter.setOnItemClickListener {
-            goToDetailsFragment(it)
+            openDetailsFragment(it)
         }
         _binding.fbAdd.setOnClickListener {
-            findNavController().navigate(HomeFragmentDirections.navigateToDescriptionFragment())
+            addNewAirline()
         }
     }
+
 
     private fun initObservers() {
         homeViewModel.allAirlines.observe(viewLifecycleOwner, {
@@ -57,7 +61,7 @@ class HomeFragment : BaseFragment() {
         })
         homeViewModel.showErrorMessage.observe(viewLifecycleOwner, {
             showError(it)
-            Log.d("HOMEHERE", it.toString())
+
         })
         homeViewModel.showProgress.observe(viewLifecycleOwner, {
             if (it) showLoading()
@@ -74,9 +78,16 @@ class HomeFragment : BaseFragment() {
 
     }
 
-    private fun goToDetailsFragment(airline: Airline) {
-        airline.name?.let { showError(it) }
+    private fun openDetailsFragment(airline: Airline) {
+        findNavController().navigate(HomeFragmentDirections.navigateToDescriptionFragment(airline))
     }
 
+    private fun addNewAirline() {
+        context?.let {
+            MaterialDialog(it, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+
+            }
+        }
+    }
 
 }
