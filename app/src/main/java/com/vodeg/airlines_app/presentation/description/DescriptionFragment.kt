@@ -9,6 +9,7 @@ import com.vodeg.airlines_app.databinding.FragmentDescriptionBinding
 import com.vodeg.airlines_app.presentation.base.BaseFragment
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import androidx.navigation.fragment.navArgs
 import com.vodeg.airlines_app.data.model.Airline
 
@@ -31,6 +32,7 @@ class DescriptionFragment : BaseFragment() {
     }
 
     private fun initView(airline: Airline) {
+        airline.let { Log.d("DETAILSHERE", it.toString()) }
         _binding.apply {
             tvAirlineName.text = airline.name ?: "Name"
             tvAirlineCountry.text = airline.country ?: "Country"
