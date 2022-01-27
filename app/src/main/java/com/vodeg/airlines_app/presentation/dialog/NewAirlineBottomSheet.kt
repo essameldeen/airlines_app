@@ -30,7 +30,7 @@ class NewAirlineBottomSheet(supportFragmentManager: FragmentManager) :
 
 
         binding.btConfirm.setOnClickListener {
-            listner.onButtonClicked(
+            listner.addNewAirline(
                 Airline(
                     name = binding.etName.text.toString(),
                     country = binding.etCountry.text.toString(),
@@ -39,10 +39,12 @@ class NewAirlineBottomSheet(supportFragmentManager: FragmentManager) :
                     established = "",
                     website = "",
                     logo = "",
-                    id = 4.0,
                 )
             )
             this.dismiss()
+        }
+        binding.btCancel.setOnClickListener {
+              this.dismiss()
         }
 
     }
@@ -57,6 +59,6 @@ class NewAirlineBottomSheet(supportFragmentManager: FragmentManager) :
     }
 
     interface BottomDialogListener {
-        fun onButtonClicked(airline: Airline)
+        fun addNewAirline(airline: Airline)
     }
 }

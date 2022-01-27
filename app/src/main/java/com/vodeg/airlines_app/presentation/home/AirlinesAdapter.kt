@@ -51,6 +51,10 @@ class AirlinesAdapter : RecyclerView.Adapter<AirlinesAdapter.AirlineViewHolder>(
         return differ.currentList.size
     }
 
+    fun addItem(airline: Airline) {
+        differ.currentList.add(airline)
+    }
+
     private var onItemClickListener: ((Airline) -> Unit)? = null
 
     fun setOnItemClickListener(listener: (Airline) -> Unit) {

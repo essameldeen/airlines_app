@@ -7,23 +7,19 @@ import android.view.ViewGroup
 import androidx.core.widget.doAfterTextChanged
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.afollestad.materialdialogs.LayoutMode
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.databinding.FragmentHomeBinding
 import com.vodeg.airlines_app.presentation.base.BaseFragment
 import com.vodeg.airlines_app.presentation.dialog.NewAirlineBottomSheet
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.ArrayList
 
 class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener {
     private lateinit var _binding: FragmentHomeBinding
     private lateinit var airlinesAdapter: AirlinesAdapter
-    private lateinit var airlinesAdapterAnim: AirlinesAdapterAnim
     private val homeViewModel: HomeViewModel by viewModel()
-    private lateinit var airLinesList: MutableList<Airline>
+    private lateinit var newAirLine: Airline
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -44,9 +40,8 @@ class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener 
     private fun initView() {
         _binding.rvAirlinesList
         airlinesAdapter = AirlinesAdapter()
-        airlinesAdapterAnim = AirlinesAdapterAnim()
         _binding.rvAirlinesList.apply {
-            adapter = airlinesAdapterAnim
+            adapter = airlinesAdapter
             layoutManager = LinearLayoutManager(activity)
         }
     }
@@ -55,30 +50,34 @@ class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener 
         airlinesAdapter.setOnItemClickListener {
             openDetailsFragment(it)
         }
-        airlinesAdapterAnim.setOnItemClickListener {
-            openDetailsFragment(it)
-        }
+
         _binding.fbAdd.setOnClickListener {
-            addNewAirline()
+            showBottomSheet()
         }
         _binding.ibSearch.setOnClickListener {
-
+            search()
         }
-        _binding.etSearch.doAfterTextChanged { s ->
-            if (s.toString().isEmpty()) {
-                airlinesAdapterAnim.animateTo(airLinesList)
+        _binding.etSearch.doAfterTextChanged { query ->
+            if (query?.isEmpty() == true) {
+                homeViewModel.getAllAirlines()
                 rv_airlinesList.scrollToPosition(0)
             }
-            val filteredList = airlinesAdapterAnim.filter(airLinesList, s.toString())
-            filteredList?.let { airlinesAdapterAnim.animateTo(it) }
-            rv_airlinesList.scrollToPosition(0)
         }
-    }
 
+    }
 
     private fun initObservers() {
         homeViewModel.allAirlines.observe(viewLifecycleOwner, {
             setData(it)
+        })
+
+        homeViewModel.addSuccess.observe(viewLifecycleOwner, {
+            if (it) {
+                showError("New AirLine Added Successfully")
+                updateList()
+            } else {
+                showError("failed To Add New Airline , please try Again ")
+            }
         })
         homeViewModel.showErrorMessage.observe(viewLifecycleOwner, {
             showError(it)
@@ -90,30 +89,41 @@ class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener 
         })
     }
 
+
     private fun setData(data: MutableList<Airline>?) {
         if (data?.isEmpty() == true) {
-            showError("No DAtA !!")
+            showError("No Data find!!")
         } else {
-            //airlinesAdapter.differ.submitList(data?.toList())
-            airLinesList = data!!
-            airlinesAdapterAnim.setData(data?.toList() as ArrayList<Airline>)
-
+            airlinesAdapter.differ.submitList(data?.toList())
         }
 
+    }
+
+    private fun showBottomSheet() {
+        fragmentManager?.let { NewAirlineBottomSheet(it).setClickListener(this) }
+    }
+
+    override fun addNewAirline(airline: Airline) {
+        newAirLine = airline
+        homeViewModel.addNewAirline(airline)
+
+    }
+
+    private fun updateList() {
+        //airlinesAdapter.differ.currentList.add(newAirLine)
+        airlinesAdapter.addItem(newAirLine)
+    }
+
+    private fun search() {
+        val query = _binding.etSearch.text.toString()
+        if (query.isNotEmpty()) {
+            homeViewModel.filter(query)
+        } else {
+            showError("Please Enter Search Value!")
+        }
     }
 
     private fun openDetailsFragment(airline: Airline) {
         findNavController().navigate(HomeFragmentDirections.navigateToDescriptionFragment(airline))
     }
-
-    private fun addNewAirline() {
-        fragmentManager?.let { NewAirlineBottomSheet(it).setClickListener(this) }
-
-
-    }
-
-    override fun onButtonClicked(airline: Airline) {
-        airline.name?.let { showError(it) }
-    }
-
 }
