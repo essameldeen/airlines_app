@@ -74,7 +74,6 @@ class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener 
         homeViewModel.addSuccess.observe(viewLifecycleOwner, {
             if (it) {
                 showError("New AirLine Added Successfully")
-                updateList()
             } else {
                 showError("failed To Add New Airline , please try Again ")
             }
@@ -109,10 +108,6 @@ class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener 
 
     }
 
-    private fun updateList() {
-        //airlinesAdapter.differ.currentList.add(newAirLine)
-        airlinesAdapter.addItem(newAirLine)
-    }
 
     private fun search() {
         val query = _binding.etSearch.text.toString()
