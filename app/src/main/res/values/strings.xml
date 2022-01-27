@@ -15,4 +15,10 @@
     <string name="headquarters">Headquarters</string>
     <string name="headquarters_values"> 30 st shoubra cairo Egypt</string>
     <string name="visit">Visit</string>
+    <string name="new_airline">Add New air line</string>
+    <string name="name_hint">Air line name</string>
+    <string name="slogan_hint">Slogan</string>
+    <string name="country_hint">Country</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 </resources>

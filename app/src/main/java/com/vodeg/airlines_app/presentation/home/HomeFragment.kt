@@ -13,11 +13,12 @@ import com.afollestad.materialdialogs.bottomsheets.BottomSheet
 import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.databinding.FragmentHomeBinding
 import com.vodeg.airlines_app.presentation.base.BaseFragment
+import com.vodeg.airlines_app.presentation.dialog.NewAirlineBottomSheet
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.ArrayList
 
-class HomeFragment : BaseFragment() {
+class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener {
     private lateinit var _binding: FragmentHomeBinding
     private lateinit var airlinesAdapter: AirlinesAdapter
     private lateinit var airlinesAdapterAnim: AirlinesAdapterAnim
@@ -106,11 +107,13 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun addNewAirline() {
-        context?.let {
-            MaterialDialog(it, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
+        fragmentManager?.let { NewAirlineBottomSheet(it).setClickListener(this) }
 
-            }
-        }
+
+    }
+
+    override fun onButtonClicked(airline: Airline) {
+        airline.name?.let { showError(it) }
     }
 
 }
