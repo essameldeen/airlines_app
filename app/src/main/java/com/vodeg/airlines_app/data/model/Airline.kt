@@ -18,9 +18,8 @@ data class Airline(
     val established: String?,
     @SerialName("head_quaters")
     val headQuaters: String?,
-    @PrimaryKey(autoGenerate = true)
     @SerialName("id")
-    val id: Int?,
+    val id: Long?,
     @SerialName("logo")
     val logo: String?,
     @SerialName("name")

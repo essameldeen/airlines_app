@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name"> AirLines </string>
+
+
+    // home fragment
+    <string name="countries">Airlines</string>
+    <string name="search_hint">Search by airline name</string>
+    // description fragment
+    <string name="description"> Airline Description</string>
+
+    // airline item
+    <string name="airline_name">Name</string>
+    <string name="country">country</string>
+    <string name="slogan">We Trivial Together</string>
+    <string name="headquarters">Headquarters</string>
+    <string name="headquarters_values"> 30 st shoubra cairo Egypt</string>
+    <string name="visit">Visit</string>
 </resources>
