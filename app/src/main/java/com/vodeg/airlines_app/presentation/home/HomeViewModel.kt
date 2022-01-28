@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.domain.usecase.AddNewAirline
-import com.vodeg.airlines_app.domain.usecase.Filter
+import com.vodeg.airlines_app.domain.usecase.Search
 import com.vodeg.airlines_app.domain.usecase.GetAllAirlines
-import com.vodeg.airlines_app.utils.Event
 import kotlinx.coroutines.launch
 
 class HomeViewModel constructor(
     private val useCaseGetAllAirline: GetAllAirlines,
     private val useCaseAdd: AddNewAirline,
-    private val useCaseFilter: Filter
+    private val useCaseSearch: Search
 ) : ViewModel() {
 
     private val _allAirlines = MutableLiveData<MutableList<Airline>>()
@@ -64,7 +63,7 @@ class HomeViewModel constructor(
     fun filter(query: String) = viewModelScope.launch {
         _showProgress.postValue(true)
         try {
-            val filterList = useCaseFilter.run(query)
+            val filterList = useCaseSearch.run(query)
             if (filterList.isNullOrEmpty()) {
                 _showErrorMessage.postValue("No Data find")
                 _allAirlines.postValue(useCaseGetAllAirline.run())

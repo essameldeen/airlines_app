@@ -3,7 +3,7 @@ package com.vodeg.airlines_app.domain.usecase
 import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.domain.repository.AirlinesRepo
 
-class Filter constructor(private val airlinesRepo: AirlinesRepo) {
+class Search constructor(private val airlinesRepo: AirlinesRepo) {
 
     fun run(query: String): MutableList<Airline> {
         val allData = airlinesRepo.getCachedAirLines()

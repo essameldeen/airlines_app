@@ -5,7 +5,7 @@ import com.vodeg.airlines_app.data.db.AirlineDataBase
 import com.vodeg.airlines_app.data.repository.AirlineRepoImp
 import com.vodeg.airlines_app.domain.repository.AirlinesRepo
 import com.vodeg.airlines_app.domain.usecase.AddNewAirline
-import com.vodeg.airlines_app.domain.usecase.Filter
+import com.vodeg.airlines_app.domain.usecase.Search
 import com.vodeg.airlines_app.domain.usecase.GetAllAirlines
 import com.vodeg.airlines_app.presentation.home.HomeViewModel
 import com.vodeg.airlines_app.utils.Constants.BASE_URL
@@ -33,7 +33,7 @@ val koinModule = module {
 
     single { GetAllAirlines(get()) }
     single { AddNewAirline(get()) }
-    single { Filter(get()) }
+    single { Search(get()) }
 
     viewModel { HomeViewModel(get(), get(), get()) }
 }
