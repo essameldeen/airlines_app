@@ -82,7 +82,7 @@ class HomeFragment : BaseFragment(), NewAirlineBottomSheet.BottomDialogListener 
         })
     }
 
-  
+
     private fun setData(data: MutableList<Airline>?) {
         if (data?.isEmpty() == true) {
             showError(resources.getString(R.string.no_data))
