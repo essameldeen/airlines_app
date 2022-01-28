@@ -8,8 +8,13 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.vodeg.airlines_app.R
 import com.vodeg.airlines_app.presentation.base.BaseFragment
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : BaseFragment(), CoroutineScope {
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + Job()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,11 +24,14 @@ class SplashFragment : BaseFragment() {
             R.layout.fragment_splash, container, false
         )
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Handler().postDelayed({
-            findNavController().navigate(SplashFragmentDirections.navigateToHomeFragment())
-        }, 1000)
+       launch {
+           delay(1000)
+           findNavController().navigate(SplashFragmentDirections.navigateToHomeFragment())
+       }
+
 
     }
 }

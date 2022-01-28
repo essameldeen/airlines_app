@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name"> AirLines </string>
 
+    <string name="general_error">An Error Happen Please Try Again!</string>
+    <string name="success_add">New AirLine Added Successfully</string>
+    <string name="no_data">No Data Find !!</string>
+    <string name="enter_data">Please Enter Search Value!!</string>
 
     // home fragment
     <string name="countries">Airlines</string>
     <string name="search_hint">Search by airline name</string>
+
     // description fragment
     <string name="description"> Airline Description</string>
+    <string name="visit">Visit</string>
 
     // airline item
     <string name="airline_name">Name</string>
@@ -14,11 +20,14 @@
     <string name="slogan">We Trivial Together</string>
     <string name="headquarters">Headquarters</string>
     <string name="headquarters_values"> 30 st shoubra cairo Egypt</string>
-    <string name="visit">Visit</string>
+
+    // new airline
     <string name="new_airline">Add New air line</string>
     <string name="name_hint">Air line name</string>
     <string name="slogan_hint">Slogan</string>
     <string name="country_hint">Country</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+
+
 </resources>

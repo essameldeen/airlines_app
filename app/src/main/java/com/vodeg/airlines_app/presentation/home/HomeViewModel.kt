@@ -8,6 +8,7 @@ import com.vodeg.airlines_app.data.model.Airline
 import com.vodeg.airlines_app.domain.usecase.AddNewAirline
 import com.vodeg.airlines_app.domain.usecase.Filter
 import com.vodeg.airlines_app.domain.usecase.GetAllAirlines
+import com.vodeg.airlines_app.utils.Event
 import kotlinx.coroutines.launch
 
 class HomeViewModel constructor(
@@ -21,19 +22,18 @@ class HomeViewModel constructor(
         get() = _allAirlines
 
     private val _showProgress = MutableLiveData<Boolean>()
-    val showProgress: LiveData<Boolean>
+    val showProgress: MutableLiveData<Boolean>
         get() = _showProgress
 
-    private val _addSuccess = MutableLiveData<Boolean>()
+    private var _addSuccess = MutableLiveData<Boolean>()
     val addSuccess: LiveData<Boolean>
         get() = _addSuccess
 
-    private val _showErrorMessage = MutableLiveData<String>()
+    private var _showErrorMessage = MutableLiveData<String>()
     val showErrorMessage: LiveData<String>
         get() = _showErrorMessage
 
     init {
-
         getAllAirlines()
     }
 
@@ -45,6 +45,7 @@ class HomeViewModel constructor(
         } catch (e: Exception) {
             _showProgress.postValue(false)
             _showErrorMessage.postValue(e.message)
+
         }
     }
 
@@ -74,5 +75,9 @@ class HomeViewModel constructor(
         } catch (e: Exception) {
             _showErrorMessage.postValue(e.message)
         }
+    }
+    fun  resetLiveData(){
+        _addSuccess = MutableLiveData<Boolean>()
+        _showErrorMessage = MutableLiveData<String>()
     }
 }
