@@ -23,4 +23,4 @@ AirLines application to display all airlines Company
 
 * Kotlin Coroutines.
 
-* Unit testing for business logic using Mockatio 
+* Unit testing for business logic using Mockito. 
